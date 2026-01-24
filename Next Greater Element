@@ -1,1 +1,49 @@
+## Pivot from max 
 
+class Solution {
+    public int[] nextGreaterElements(int[] nums) {
+        // The biggest element wil act as jammer 
+        // reverse traverse from there 
+        int max = Integer.MIN_VALUE;
+        int index = 0;
+        int n = nums.length;
+
+        for(int i = 0; i < n; i++){
+                if(nums[i] > max){
+                    index = i;
+                    max = nums[i];
+                }
+        }
+        boolean firstflag = true;
+        int i1 = 0;
+        Stack<Integer> stack = new Stack<>();
+        
+        int[] result = new int[n]; 
+
+        int i = index;
+        do {
+          if(stack.isEmpty()){
+                result[i] = -1;
+                stack.push(nums[i]);
+                i = (i - 1 + n) % n;
+                continue;
+            }
+
+            while(!stack.isEmpty()){
+                if(nums[i]<stack.peek()){
+                    result[i] = stack.peek();
+                    break;
+                }else{
+                    stack.pop();
+                }
+            }
+            if(stack.isEmpty()){
+                result[i] = -1;
+            }
+            stack.push(nums[i]);
+            i = (i - 1 + n) % n;
+        } while (i != index);
+
+        return result;
+    }
+}
